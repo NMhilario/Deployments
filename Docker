@@ -6,19 +6,6 @@ sudo swapoff -a
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 sudo sysctl -p
 
-[ADD DOCKER TO SYSTEMD CGROUP DRIVER (OPTIONAL)]
-
-sudo cat <<EOF | sudo tee /etc/docker/daemon.json
-{
-  "exec-opts": ["native.cgroupdriver=systemd"],
-  "log-driver": "json-file",
-  "log-opts": {
-    "max-size": "100m"
-  },
-  "storage-driver": "overlay2"
-}
-EOF
-
 [CHECK DOCKER AVAILABLE VERSIONS]
 
 apt-cache madison docker-ce
@@ -56,3 +43,16 @@ sudo systemctl restart docker
 [USE DOCKER WITHOUT SUDO (OPTIONAL)]
 
 sudo usermod -aG docker $USER
+
+[ADD DOCKER TO SYSTEMD CGROUP DRIVER (OPTIONAL)]
+
+sudo cat <<EOF | sudo tee /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
