@@ -44,7 +44,7 @@ sudo systemctl restart docker
 
 sudo usermod -aG docker $USER
 
-[ADD DOCKER TO SYSTEMD CGROUP DRIVER (OPTIONAL)]
+[ADD DOCKER TO SYSTEMD CGROUP DRIVER (OPTIONAL) RECOMENDED FOR A KUBERNETES CLUSTER ENVIROMENT]
 
 sudo cat <<EOF | sudo tee /etc/docker/daemon.json
 {
