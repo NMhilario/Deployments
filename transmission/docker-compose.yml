@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    restart: always
+    container_name: transmission
+    ports:
+      - 8180:9091
+      - 51413:51413
+      - 51413:51413/udp
+    networks:
+      - services
+    volumes:
+      - $HOME/transmission/config:/config
+      - $HOME/transmission/downloads:/downloads
+      - $HOME/transmission/watch:/watch
+    env_file:
+      - .env
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Lisbon
+      #- TRANSMISSION_WEB_HOME= #optional
+      - USER=${transmission_user}
+      - PASS=${transmission_password}
+      #- WHITELIST= #optional
+      #- PEERPORT= #optional
+      #- HOST_WHITELIST= #optional
+
+networks:
+  services:
+    external: true

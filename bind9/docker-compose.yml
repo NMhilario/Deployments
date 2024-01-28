@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  bind9:
+    image: ubuntu/bind9:latest
+    restart: unless-stopped
+    container_name: bind9
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+    networks:
+      - services
+    volumes:
+      - /$HOME/bind9/cache:/var/cache/bind
+      - /$HOME/bind9/config:/etc/bind
+      - /$HOME/bind9/records:/var/lib/bind
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Lisbon
+      - BIND9_USER=root
+networks:
+  services:
+    external: true
+

@@ -1,0 +1,38 @@
+version: '3.9'
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    restart: unless-stopped
+    container_name: vscode
+    ports:
+      - 8443:8443
+    networks:
+      - services
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $HOME/code-server/config:/config
+    env_file:
+      - .env
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Lisbon
+      - PASSWORD=${vscode_password}
+      - SUDO_PASSWORD=${vscode_root_password}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.code-server.entrypoints=http"
+      - "traefik.http.routers.code-server.rule=Host(`vscode.nyxcloud.net`)"
+      - "traefik.http.middlewares.code-server-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.code-server.middlewares=code-server-https-redirect"
+      - "traefik.http.routers.code-server-secure.entrypoints=https"
+      - "traefik.http.routers.code-server-secure.rule=Host(`vscode.nyxcloud.net`)"
+      - "traefik.http.routers.code-server-secure.tls=true"
+      - "traefik.http.routers.code-server-secure.service=code-server"
+      - "traefik.http.services.code-server.loadbalancer.server.port=8443"
+      - "traefik.docker.network=services"
+
+networks:
+  services:
+    external: true

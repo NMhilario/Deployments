@@ -1,0 +1,19 @@
+---
+###############################################################
+#                         Users Database                      #
+###############################################################
+
+# This file can be used if you do not have an LDAP set up.
+
+# List of users
+users:
+  plearner:
+    displayname: "Padawan Learner"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$sv/8ZjwmbmqwAwQvHvZAeQ$3scSD+1TMqzz4eRXNXK6TK/76ehvqqmVX8ntDxtUpOI"
+    email: hilario.nuno@hotmail.com
+    groups:
+      - admins
+      - dev
+
+#docker run authelia/authelia:latest authelia hash-password 'w6no+reThuDrIsW*bu'
+---

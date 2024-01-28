@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  kubernetes_Tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    container_name: kubernetesTunnel
+    command: tunnel --no-autoupdate run
+    env_file:
+      - .env
+    environment:
+      - TUNNEL_TOKEN=${cf_tunnel_token}

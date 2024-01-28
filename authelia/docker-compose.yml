@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+  authelia:
+    image: authelia/authelia:latest
+    restart: always
+    container_name: authelia
+    ports:
+      - 9091:9091
+    networks:
+      - services
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /$HOME/dockerServer/authelia/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Lisbon
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.authelia.entrypoints=http"
+      - "traefik.http.routers.authelia.rule=Host(`authelia.nyxcloud.net`)"
+      - "traefik.http.middlewares.authelia-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.authelia.middlewares=authelia-https-redirect"
+      - "traefik.http.routers.authelia-secure.entrypoints=https"
+      - "traefik.http.routers.authelia-secure.rule=Host(`authelia.nyxcloud.net`)"
+      - "traefik.http.routers.authelia-secure.tls=true"
+      - "traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://authelia.nyxcloud.net"
+      - "traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true"
+      - "traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
+      - "traefik.http.routers.authelia-secure.service=authelia"
+      - "traefik.http.services.authelia.loadbalancer.server.port=9091"
+      - "traefik.docker.network=services"
+    healthcheck:
+      disable: true
+
+networks:
+  services:
+    external: true

@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    restart: unless-stopped
+    container_name: crowdsec
+    networks:
+      - services
+    environment:
+      GID: "${GID-1000}"
+      COLLECTIONS: "crowdsecurity/linux crowdsecurity/traefik"
+      TZ: "Europe/Lisbon"
+    volumes:
+      - /$HOME/dockerServer/crowdsec/config/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
+      - traefik_traefik-logs:/var/log/traefik/:ro
+  bouncer-traefik:
+    image: fbonalair/traefik-crowdsec-bouncer:latest
+    restart: unless-stopped
+    container_name: crowdsec_bouncer
+    networks:
+      - services
+    env_file:
+      - .env
+    environment:
+      CROWDSEC_BOUNCER_API_KEY: ${crowdsec_bouncer_api_key}
+      CROWDSEC_AGENT_HOST: crowdsec:8080
+      TZ: "Europe/Lisbon"
+    depends_on:
+      - crowdsec
+networks:
+  services:
+    external: true
+volumes:
+  crowdsec-db:
+  crowdsec-config:
+  traefik_traefik-logs:
+    external: true

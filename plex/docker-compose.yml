@@ -1,0 +1,52 @@
+version: '3.3'
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    restart: always
+    container_name: plex
+    ports:
+      - 32400:32400
+      - 1900:1900/udp
+      - 3005:3005
+      - 5353:5353/udp
+      - 8324:8324
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+      - 32469:32469
+    networks:
+      - services
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/padawan/plex/config:/config
+      - /home/padawan/plex/movies:/movies
+      - /home/padawan/plex/shows:/shows
+      - /home/padawan/plex/music:/music
+      - /home/padawan/plex/tvseries:/tvseries
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Lisbon
+      - VERSION=docker
+      - PLEX_CLAIM=claim--V5xjujkyRzs7Xzczw1M
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plex.entrypoints=http"
+      - "traefik.http.routers.plex.rule=Host(`plex.nyxcloud.net`)"
+      - "traefik.http.middlewares.plex-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.plex.middlewares=plex-https-redirect"
+      - "traefik.http.routers.plex-secure.entrypoints=https"
+      - "traefik.http.routers.plex-secure.rule=Host(`plex.nyxcloud.net`)"
+      - "traefik.http.routers.plex-secure.tls=true"
+      - "traefik.http.routers.plex-secure.service=plex"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
+      - "traefik.docker.network=services"
+
+networks:
+  services:
+    external: true
+
+# https://www.plex.tv/claim/
+# sudo mount -t cifs -o username=hilar //166.10.10.111/Movies ~/plex/movies/

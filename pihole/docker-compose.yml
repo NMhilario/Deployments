@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  pihole:
+    image: plearner/pihole-unbound:1.2023
+    networks:
+      - services-dhcp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/padawan/pihole/etc-pihole:/etc/pihole:rw
+      - /home/padawan/pihole/etc-dnsmasq:/etc/dnsmasq.d:rw
+    environment:
+      - TZ=Europe/Lisbon
+
+networks:
+  services-dhcp:
+    external: true
+
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+# For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
+# - "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
+# https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+# cap_add:
+#   - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
+
+# docker stack deploy --compose-file docker-compose.yml nyxcloud

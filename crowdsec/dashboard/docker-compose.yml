@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  crowdsecDashboard:
+    image: crowdsec-dashboard:1
+    restart: unless-stopped
+    container_name: crowdsec-dashboard
+    ports:
+      - 8184:3000
+    networks:
+      - services
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - crowdsec_crowdsec-db:/metabase-data/
+    environment:
+      MB_DB_FILE: /data/metabase.db
+      MGID: "${GID-1000}"
+      TZ: "Europe/Lisbon"
+networks:
+  services:
+    external: true
+volumes:
+  crowdsec_crowdsec-db:
+    external: true
+
+# Default’s credentials for metabase are crowdsec@crowdsec.net and !!Cr0wdS3c_M3t4b4s3?? Be sure to change this.

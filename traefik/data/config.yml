@@ -1,0 +1,460 @@
+http:
+  routers:
+    uvdesk:
+      entryPoints:
+        - "https"
+      rule: "Host(`support.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: uvdesk
+    passbolt:
+      entryPoints:
+        - "https"
+      rule: "Host(`passbolt.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: passbolt
+    transmission:
+      entryPoints:
+        - "https"
+      rule: "Host(`transmission.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: transmission
+    rancher:
+      entryPoints:
+        - "https"
+      rule: "Host(`rancher.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: rancher
+    harvester:
+      entryPoints:
+        - "https"
+      rule: "Host(`harvester.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: harvester
+    vscode:
+      entryPoints:
+        - "https"
+      rule: "Host(`vscode.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: vscode
+    grafana:
+      entryPoints:
+        - "https"
+      rule: "Host(`grafana.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: grafana
+    cuidadosaudeDEV:
+      entryPoints:
+        - "https"
+      rule: "Host(`cuidadosaude.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+        - cuidadosaude-nyxcloud-auth
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: cuidadosaudeDEV
+    cuidadosaude:
+      entryPoints:
+        - "https"
+      rule: "Host(`cuidadosaude.pt`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "cuidadosaude"
+        domains:
+          - main: "cuidadosaude.pt"
+            sans:
+              - "*.cuidadosaude.pt"
+      service: cuidadosaude
+    rooseveltIDRAC:
+      entryPoints:
+        - "https"
+      rule: "Host(`roosevelt.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: rooseveltIDRAC
+    alexanderIDRAC:
+      entryPoints:
+        - "https"
+      rule: "Host(`alexander.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: alexanderIDRAC
+    ludwigIDRAC:
+      entryPoints:
+        - "https"
+      rule: "Host(`ludwig.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: ludwigIDRAC
+    trinityIDRAC:
+      entryPoints:
+        - "https"
+      rule: "Host(`trinity.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: trinityIDRAC
+    nowo:
+      entryPoints:
+        - "https"
+      rule: "Host(`nowo.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: nowo
+    adguard:
+      entryPoints:
+        - "https"
+      rule: "Host(`adguard.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: adguard
+    ansible:
+      entryPoints:
+        - "https"
+      rule: "Host(`ansible.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: ansible
+    nyxcloud:
+      entryPoints:
+        - "https"
+      rule: "Host(`nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+        - nyxcloud-auth
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: nyxcloud
+    corsafortes:
+      entryPoints:
+        - "https"
+      rule: "Host(`corsafortes.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+        - corsa-nyxcloud-auth
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: corsafortes
+    kamphaa:
+      entryPoints:
+        - "https"
+      rule: "Host(`kamphaa.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+        - kamphaa-nyxcloud-auth
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: kamphaa
+    crowdsec:
+      entryPoints:
+        - "https"
+      rule: "Host(`crowdsec.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: crowdsec
+    kuma:
+      entryPoints:
+        - "https"
+      rule: "Host(`kuma.nyxcloud.net`)"
+      middlewares:
+        - same-origin
+        - default-headers
+      tls:
+        certresolver: "nyxcloud"
+        domains:
+          - main: "nyxcloud.net"
+            sans:
+              - "*.nyxcloud.net"
+      service: kuma
+  services:
+    uvdesk:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.2:8185"
+        passHostHeader: true
+    passbolt:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.2:8181"
+        passHostHeader: true
+    transmission:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.2:8180"
+        passHostHeader: true
+    rancher:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.90.54"
+        passHostHeader: true
+    harvester:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.90.4"
+        passHostHeader: true
+    vscode:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.64"
+        passHostHeader: true
+    grafana:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.65"
+        passHostHeader: true
+    cuidadosaudeDEV:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.2:8183"
+        passHostHeader: true
+    cuidadosaude:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.101"
+        passHostHeader: true
+    rooseveltIDRAC:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.90.31"
+        passHostHeader: true
+    alexanderIDRAC:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.90.32"
+        passHostHeader: true
+    ludwigIDRAC:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.90.34"
+        passHostHeader: true
+    trinityIDRAC:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.90.38"
+        passHostHeader: true
+    nowo:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.90.1"
+        passHostHeader: true
+    adguard:
+      loadBalancer:
+        servers:
+          - url: "http://176.58.121.82"
+        passHostHeader: true
+    ansible:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.2:3000"
+        passHostHeader: true
+    nyxcloud:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.102"
+        passHostHeader: true
+    corsafortes:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.102"
+        passHostHeader: true
+    kamphaa:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.102"
+        passHostHeader: true
+    crowdsec:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.90.2:8184"
+        passHostHeader: true
+    kuma:
+      loadBalancer:
+        servers:
+          - url: "http://176.58.121.82:3001"
+        passHostHeader: true
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: https
+    cuidadosaude-nyxcloud-auth:
+      basicAuth:
+        usersFile: cuidadosaudeUsers
+    nyxcloud-auth:
+      basicAuth:
+        usersFile: nyxcloudUsers
+    corsa-nyxcloud-auth:
+      basicAuth:
+        usersFile: corsaUsers
+    kamphaa-nyxcloud-auth:
+      basicAuth:
+        usersFile: kamphaaUsers
+    authelia:
+      forwardAuth:
+        address: "http://authelia:9091/api/verify?rd=https://authelia.nyxcloud.net"
+    default-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+    same-origin:
+      headers:
+        customFrameOptionsValue: "SAMEORIGIN"
+    allow-from:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - POST
+        accessControlAllowHeaders: "*"
+        accessControlAllowOriginList:
+          - https://cuidadosaude.nyxcloud.net
+        accessControlMaxAge: 100
+        addVaryHeader: true
+    secured:
+      chain:
+        middlewares:
+          - same-origin
+          - allow-from
+          - default-headers
+    crowdsec-bouncer:
+      forwardauth:
+        address: http://bouncer-traefik:8080/api/v1/forwardAuth
+        trustForwardHeader: true

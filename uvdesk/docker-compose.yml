@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  uvdesk:
+    image: nuttcorp/uvdesk:latest
+    restart: unless-stopped
+    container_name: uvdesk
+    ports:
+      - 8185:80
+    networks:
+      - services
+    volumes:
+      - uvdesk-www:/var/www/uvdesk:rw
+    tty: true
+    env_file:
+      - .env
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: "Europe/Lisbon"
+      DATABASE_HOST: ${uvdesk_db_host}
+      DATABASE_PORT: ${uvdesk_db_port}
+      MYSQL_DATABASE: ${uvdesk_db_name}
+      MYSQL_ROOT_PASSWORD: ${uvdesk_root_password}
+      MYSQL_USER: ${uvdesk_db_user}
+      MYSQL_PASSWORD: ${uvdesk_db_password}
+volumes:
+  uvdesk-www:
+    driver: local
+networks:
+  services:
+    external: true

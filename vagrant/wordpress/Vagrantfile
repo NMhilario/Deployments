@@ -1,0 +1,24 @@
+ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+
+BOX         = 'ubuntu/focal64'
+BOX_VERSION = '20230207.0.0'
+CPUS        = 4
+MEMORY	    = 4096
+STATIC_IP   = '166.10.10.4'
+
+Vagrant.configure("2") do |config|
+  config.vm.box               = BOX
+  config.vm.box_version       = BOX_VERSION
+  config.vm.disk :disk, name: BOX, size: '10GB'
+
+  config.vm.box_check_update  = false
+  config.vm.hostname          = 'nyxcloud.net'
+
+  config.vm.network 'public_network', bridge: 'eno1', ip: STATIC_IP
+
+  config.vm.provider 'virtualbox' do |v|
+    v.name    = 'wordpress'
+    v.memory  = MEMORY
+    v.cpus    = CPUS
+  end
+end

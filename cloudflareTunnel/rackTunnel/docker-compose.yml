@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  rack_Tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    container_name: rackTunnel
+    command: tunnel --no-autoupdate run
+    env_file:
+      - .env
+    environment:
+      - TUNNEL_TOKEN=${cf_tunnel_token}

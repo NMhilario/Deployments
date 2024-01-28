@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  appsaude:
+    image: plearner/php8-apache-mysqli:v2.1.2023
+    restart: unless-stopped
+    container_name: cuidadosaude
+    ports:
+      - 8183:80
+    networks:
+      - services
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /$HOME//webapps/cuidadosaude/cuidadosaude:/var/www/html
+networks:
+  services:
+    external: true

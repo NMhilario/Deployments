@@ -1,0 +1,10 @@
+$TTL 38400
+@                                       IN          SOA         nyxcloud.net. (
+                                                    2023022     ; serial number
+                                                    10800       ; refresh
+                                                    2600        ; update retry
+                                                    604800      ; expiry
+                                                    38400 )     ; minimum
+
+@                                       IN          NS          nyxcloud.net.
+traefik                                 IN          A           10.0.90.2

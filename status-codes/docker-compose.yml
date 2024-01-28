@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  error-service:
+    image: plearner/php8-apache-mysqli:v2.1.2023
+    restart: unless-stopped
+    container_name: error-handler
+    networks:
+      - services
+    ports:
+      - 8185:80
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /$HOME/status-codes/html/status-pages:/var/www/html:ro
+networks:
+  services:
+    external: true
