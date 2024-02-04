@@ -1,0 +1,48 @@
+[SET FILES/PATHS]
+
+mkdir rancher
+cd rancher
+touch docker-compose.yml
+mkdir data
+
+[DOCKER-COMPOSE FILE]
+
+version: '3'
+
+services:
+  rancher:
+    image: rancher/rancher:latest
+    container_name: rancher
+    restart: unless-stopped
+    #security_opt:
+    #  - no-new-privileges:true
+    privileged: true
+    networks:
+      - proxy
+    ports:
+      - 9090:80
+      - 9091:443
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/padawan/rancher/data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rancher.entrypoints=http"
+      - "traefik.http.routers.rancher.rule=Host(`rancher.<LOCAL>.<DOMAIN>`)"
+      - "traefik.http.middlewares.rancher-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.rancher.middlewares=rancher-https-redirect"
+      - "traefik.http.routers.rancher-secure.entrypoints=https"
+      - "traefik.http.routers.rancher-secure.rule=Host(`rancher.<LOCAL>.<DOMAIN>`)"
+      - "traefik.http.routers.rancher-secure.tls=true"
+      - "traefik.http.routers.rancher-secure.service=rancher"
+      - "traefik.http.services.rancher.loadbalancer.server.port=9091"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
+
+[CREATE DOCKER PROXY NETWORK]
+
+docker network create proxy
