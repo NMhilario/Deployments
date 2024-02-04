@@ -1,0 +1,6 @@
+[SET FILES/PATHS]
+
+mkdir portainer
+cd portainer
+touch docker-compose.yml
+mkdir data
