@@ -44,9 +44,9 @@ VERSION:
 
 sudo apt-mark hold docker-ce docker-ce-cli containerd.io
 
-sudo systemctl enable docker \
-	sudo systemctl daemon-reload \
-	sudo systemctl restart docker
+sudo systemctl enable docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 
 [USE DOCKER WITHOUT SUDO (OPTIONAL)]
 
