@@ -1,0 +1,18 @@
+$TTL 86400
+
+$ORIGIN domain.you.
+
+@                                       IN          SOA         ns.domain.you. email.gmail.com. (
+                                                    1           ; serial number
+                                                    12h         ; refresh
+                                                    15m         ; update retry
+                                                    3w          ; expiry
+                                                    2h          ; minimum ttl
+                                                    )
+
+                                        IN              NS      domain.you.
+
+domain.you.                             IN              NS      ns.domain.you.
+ns.domain.you.                          IN              A       <BIND9 IP>
+
+FEEL FREE TO POPULATE WITH YOUR OWN DNS RECORDS

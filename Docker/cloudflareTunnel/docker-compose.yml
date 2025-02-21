@@ -1,11 +1,12 @@
-version: '3.8'
+version: '3.3'
+
 services:
   tunnel:
-    image: cloudflare/cloudflared:latest
+    image: cloudflare/cloudflared:<VERSION/LATEST>
+    container_name: CFTunnel
     restart: unless-stopped
-    container_name: tunnel
     command: tunnel --no-autoupdate run
     env_file:
-      - .env
+      - .env # <FILE MUST BE CREATED apply chmod 600 .env>
     environment:
-      - TUNNEL_TOKEN=${tunnel_token}
+      - TUNNEL_TOKEN=${.env_key}

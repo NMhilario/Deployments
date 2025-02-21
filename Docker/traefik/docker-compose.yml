@@ -13,16 +13,19 @@ services:
       - 80:80
       - 443:443
     env_file:
-      - .env
+      - .env # <FILE MUST BE CREATED apply chmod 600 .env>
     environment:
-      - <ENVIROMENT VARIABLE FOR API EMAIL>=<KEY FROM ENV FILE>
-      - <ENVIROMENT VARIABLE FOR API KEY>=<KEY FROM ENV FILE>
+      ## FOR CLOUDFLARE ONLY (OTHER DNS PROVIDERS SEE DOCS FOR ENV VARIABLES)
+      - CF_API_EMAIL=${.env_key}
+      - CF_API_KEY=${.env_key}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /PATH/data/traefik.yml:/traefik.yml:ro
       - /PATH/data/acme.json:/acme.json
       - /PATH/data/config.yml:/config.yml:ro
+      # UNCOMMENT IF DEPLOYING CROWDSEC
+      # - traefik-logs:/var/log/traefik
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http"
@@ -43,3 +46,6 @@ services:
 networks:
   NETWORK:
     external: true
+# UNCOMMENT IF DEPLOYING CROWDSEC
+# volumes:
+#   traefik-logs:

@@ -6,9 +6,9 @@ http:
       rule: "Host(`URL`)"
       middlewares:
         - default-headers
-      #<ONE DOMAIN>
+    #<ONE DOMAIN>
       tls: {}
-      # <MULTIPLE DOMAINS AND SSL CERTIFICATES>
+    # <MULTIPLE DOMAINS AND SSL CERTIFICATES>
       # tls:
       #   certresolver: "DNS_PROVIDER_# (traefik.yml file)"
       #   domains: "<DOMAIN>,*.<DOMAIN>"
@@ -19,9 +19,9 @@ http:
       rule: "Host(`URL`)"
       middlewares:
         - default-headers
-      #<ONE DOMAIN>
+    #<ONE DOMAIN>
       tls: {}
-      # <MULTIPLE DOMAINS AND SSL CERTIFICATES>
+    # <MULTIPLE DOMAINS AND SSL CERTIFICATES>
       # tls:
       #   certresolver: "DNS_PROVIDER_# (traefik.yml file)"
       #   domains: "<DOMAIN>,*.<DOMAIN>"
@@ -65,3 +65,8 @@ http:
         middlewares:
         - default-whitelist
         - default-headers
+    # UNCOMMENT IF DEPLOYING CROWDSEC
+    # crowdsec-bouncer:
+    #   forwardauth:
+    #     address: http://bouncer-traefik:8080/api/v1/forwardAuth
+    #     trustForwardHeader: true

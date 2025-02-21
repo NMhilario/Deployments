@@ -1,33 +1,33 @@
 version: '3.3'
 services:
   sqladmin:
-    image: adminer:latest
-    restart: always
+    image: adminer:<VERSION/LATEST>
     container_name: SQLAdminer
+    restart: unless-stopped
     ports:
       - 8080:8080
     networks:
-      - cuidadosaude
+      - <NETWORK>
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Lisbon
+      - PUID=<run id command to get PUID and PGID>
+      - PGID=<run id command to get PUID and PGID>
+      # - TZ=Europe/Lisbon <OPTIONAL>
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sqladmin.entrypoints=http"
-      - "traefik.http.routers.sqladmin.rule=Host(`sqladmin.nyxcloud.net`)"
+      - "traefik.http.routers.sqladmin.rule=Host(`URL`)"
       - "traefik.http.middlewares.sqladmin-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.sqladmin.middlewares=sqladmin-https-redirect"
       - "traefik.http.routers.sqladmin-secure.entrypoints=https"
-      - "traefik.http.routers.sqladmin-secure.rule=Host(`sqladmin.nyxcloud.net`)"
+      - "traefik.http.routers.sqladmin-secure.rule=Host(`URL`)"
       - "traefik.http.routers.sqladmin-secure.tls=true"
       - "traefik.http.routers.sqladmin-secure.service=sqladmin"
       - "traefik.http.services.sqladmin.loadbalancer.server.port=8080"
-      - "traefik.docker.network=cuidadosaude"
+      - "traefik.docker.network=NETWORK"
 
 networks:
-  cuidadosaude:
+  NETWORK:
     external: true

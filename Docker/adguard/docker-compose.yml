@@ -1,9 +1,12 @@
 version: '3.3'
+
 services:
   adguard:
     image: adguard/adguardhome:<VERSION/LATEST>
+    container_name: adguard
+    restart: unless-stopped
     ports:
-      # Uncomment if needed....
+      # UNCOMMENT IF NEEDED....
       - 53:53/tcp
       - 53:53/udp
       #- 67:67/udp
@@ -19,15 +22,15 @@ services:
       #- 5443:5443/tcp
       #- 5443:5443/udp
     networks:
-      - NETWORK
+      - <NETWORK>
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /PATH/conf:/opt/adguardhome/conf
       - /PATH/work:/opt/adguardhome/work
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=<run id command to get PUID and PGID>
+      - PGID=<run id command to get PUID and PGID>
       # - TZ=Europe/Lisbon #optional
       # - CONFIGFILE=/PATH/conf/adguardhome-sync.yaml #optional
     # ALL THIS LABELS ARE USED ASSUMING THAT YOU ARE USING TRAEFIK AS A REVERSE PROXY
@@ -43,7 +46,7 @@ services:
       - "traefik.http.routers.adguard-secure.tls=true"
       - "traefik.http.routers.adguard-secure.service=adguard"
       - "traefik.http.services.adguard.loadbalancer.server.port=3000"
-      - "traefik.docker.network=services-dhcp"
+      - "traefik.docker.network=NETWORK"
 networks:
   NETWORK:
     external: true

@@ -1,55 +1,55 @@
-version: '3.9'
+version: '3.3'
+
 services:
   passbolt_mariaDB:
-    image: mariadb:10.3
-    restart: always
+    image: mariadb:<version> # check passbolt docs and pin to recommended version
     container_name: passbolt_mariaDB
+    restart: unless-stopped
     ports:
       - 3306:3306
     networks:
-      - services
+      - <NETWORK>
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - database_volume:/var/lib/mysql
     env_file:
-      - .env
+      - .env # <FILE MUST BE CREATED apply chmod 600 .env>
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "true"
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-
+      MYSQL_DATABASE: ${.env_key}
+      MYSQL_USER: ${.env_key}
+      MYSQL_PASSWORD: ${.env_key}
   passbolt:
-    image: passbolt/passbolt:latest-ce
-    restart: always
+    image: passbolt/passbolt:<VERSION/LATEST>
     container_name: passbolt
+    restart: unless-stopped
     ports:
       - 8181:80
     depends_on:
       - passbolt_mariaDB
     networks:
-      - services
+      - <NETWORK>
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - gpg_volume:/etc/passbolt/gpg
       - jwt_volume:/etc/passbolt/jwt
     env_file:
-      - .env
+      - .env # <FILE MUST BE CREATED apply chmod 600 .env>
     environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: "Europe/Lisbon"
-      APP_FULL_BASE_URL: https://passbolt.nyxcloud.net
+      PUID: <run id command to get PUID and PGID>
+      PGID: <run id command to get PUID and PGID>
+      # TZ: Europe/Lisbon <OPTIONAL>
+      APP_FULL_BASE_URL: https://<YOUR URL>
       DATASOURCES_DEFAULT_HOST: "passbolt_mariaDB"
-      DATASOURCES_DEFAULT_USERNAME: ${MYSQL_USER}
-      DATASOURCES_DEFAULT_PASSWORD: ${MYSQL_PASSWORD}
-      DATASOURCES_DEFAULT_DATABASE: ${MYSQL_DATABASE}
+      DATASOURCES_DEFAULT_USERNAME: ${.env_key}
+      DATASOURCES_DEFAULT_PASSWORD: ${.env_key}
+      DATASOURCES_DEFAULT_DATABASE: ${.env_key}
     command: ["/usr/bin/wait-for.sh", "-t", "0", "passbolt_mariaDB:3306", "--", "/docker-entrypoint.sh"]
 
 networks:
-  services:
+  NETWORK:
     external: true
 
 volumes:
@@ -57,4 +57,5 @@ volumes:
   gpg_volume:
   jwt_volume:
 
-# docker-compose -f docker-compose.yaml exec passbolt su -m -c "/usr/share/php/passbolt/bin/cake passbolt register_user -u hilario.nuno@hotmail.com -f Nuno -l Hilario -r admin" -s /bin/sh www-data
+###### EXECUTE FOLLOWING COMMAND TO CREATE FIRST USER ######
+# docker-compose -f docker-compose.yaml exec passbolt su -m -c "/usr/share/php/passbolt/bin/cake passbolt register_user -u email@yourmail.com -f <First Name> -l <Last Name> -r admin" -s /bin/sh www-data

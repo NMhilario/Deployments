@@ -1,24 +1,28 @@
-version: "3.8"
+version: '3.3'
+
 services:
   crowdsecDashboard:
-    image: crowdsec-dashboard:1
-    restart: unless-stopped
+    image: <IMAGE CREATED WITH DOCKERFILE>
     container_name: crowdsec-dashboard
+    restart: unless-stopped
     ports:
       - 8184:3000
     networks:
-      - services
+      - <NETWORK>
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - crowdsec_crowdsec-db:/metabase-data/
     environment:
+      PUID: <run id command to get PUID and PGID>
+      PGID: <run id command to get PUID and PGID>
+      # TZ: Europe/Lisbon <OPTIONAL>
       MB_DB_FILE: /data/metabase.db
-      MGID: "${GID-1000}"
-      TZ: "Europe/Lisbon"
+
 networks:
-  services:
+  NETWORK:
     external: true
+
 volumes:
   crowdsec_crowdsec-db:
     external: true

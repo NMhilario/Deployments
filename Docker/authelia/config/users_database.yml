@@ -7,13 +7,11 @@
 
 # List of users
 users:
-  plearner:
-    displayname: "Padawan Learner"
-    password: "$argon2id$v=19$m=65536,t=3,p=4$sv/8ZjwmbmqwAwQvHvZAeQ$3scSD+1TMqzz4eRXNXK6TK/76ehvqqmVX8ntDxtUpOI"
-    email: hilario.nuno@hotmail.com
+  USER:
+    displayname: "YOUR NAME"
+    password: "CREATE PASSWORD - SEE COMMAND BELOW"
+    email: email@somewhere.mail
     groups:
       - admins
-      - dev
 
-#docker run authelia/authelia:latest authelia hash-password 'w6no+reThuDrIsW*bu'
----
+#docker run authelia/authelia:latest authelia hash-password 'very difficult password'

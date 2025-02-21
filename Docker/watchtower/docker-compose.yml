@@ -1,18 +1,22 @@
-version: '3.8'
+version: '3.3'
+
 services:
   watchtower:
-    image: containrrr/watchtower:latest
-    restart: unless-stopped
+    image: containrrr/watchtower:<VERSION/LATEST>
     container_name: watchtower
+    restart: unless-stopped
     networks:
-      - services
+      - <NETWORK>
     volumes:
       - /etc/localtime:/etc/localtime
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      WATCHTOWER_SCHEDULE: "0 0 1 * * *"
+      WATCHTOWER_SCHEDULE: "0 0 1 * * *" # Every Day an 1am
       WATCHTOWER_CLEANUP: "true"
       WATCHTOWER_DEBUG: "true"
+
 networks:
-  services:
+  NETWORK:
     external: true
+
+# ONLY IMAGES WITH THE TAG LATEST WILL BE UPDATED

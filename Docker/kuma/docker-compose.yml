@@ -1,34 +1,35 @@
-version: '3.8'
+version: '3.3'
+
 services:
   kuma:
-    image: louislam/uptime-kuma:latest
-    restart: unless-stopped
+    image: louislam/uptime-kuma:<VERSION/LATEST>
     container_name: kuma
+    restart: unless-stopped
     ports:
       - 3001:3001
     networks:
-      - services
+      - <NETWORK>
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - /$HOME/kuma/data:/app/data
+      - /path/data:/app/data
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Lisbon
+      - PUID=<run id command to get PUID and PGID>
+      - PGID=<run id command to get PUID and PGID>
+      # - TZ=Europe/Lisbon <OPTIONAL>
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.kuma.entrypoints=http"
-      - "traefik.http.routers.kuma.rule=Host(`kuma.nyxcloud.net`)"
+      - "traefik.http.routers.kuma.rule=Host(`URL`)"
       - "traefik.http.middlewares.kuma-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.kuma.middlewares=kuma-https-redirect"
       - "traefik.http.routers.kuma-secure.entrypoints=https"
-      - "traefik.http.routers.kuma-secure.rule=Host(`kuma.nyxcloud.net`)"
+      - "traefik.http.routers.kuma-secure.rule=Host(`URL`)"
       - "traefik.http.routers.kuma-secure.tls=true"
       - "traefik.http.routers.kuma-secure.service=kuma"
       - "traefik.http.services.kuma.loadbalancer.server.port=3001"
-      - "traefik.docker.network=services"
+      - "traefik.docker.network=NETWORK"
 
 networks:
-  services:
+  NETWORK:
     external: true

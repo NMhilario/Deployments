@@ -1,31 +1,52 @@
-version: '3.8'
+version: '3.3'
+
 services:
-  uvdesk:
-    image: nuttcorp/uvdesk:latest
+  uvdesk_mysql:
+    image: mysql:<version> # check UVDesk docs and pin to recommended version
+    container_name: uvdesk_mysql
     restart: unless-stopped
+    env_file:
+      - .env # <FILE MUST BE CREATED apply chmod 600 .env>
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=no
+      - MYSQL_ROOT_PASSWORD=${.env_key}
+      - MYSQL_DATABASE=${.env_key}
+      - MYSQL_USER=${.env_key}
+      - MYSQL_PASSWORD=${.env_key}
+    volumes:
+      - semaphore-mysql:/var/lib/mysql
+  uvdesk:
+    image: nuttcorp/uvdesk:<VERSION/LATEST>
     container_name: uvdesk
+    restart: unless-stopped
     ports:
       - 8185:80
     networks:
-      - services
+      - <NETWORK>
     volumes:
       - uvdesk-www:/var/www/uvdesk:rw
     tty: true
     env_file:
-      - .env
+      - .env # <FILE MUST BE CREATED apply chmod 600 .env>
     environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: "Europe/Lisbon"
-      DATABASE_HOST: ${uvdesk_db_host}
-      DATABASE_PORT: ${uvdesk_db_port}
-      MYSQL_DATABASE: ${uvdesk_db_name}
-      MYSQL_ROOT_PASSWORD: ${uvdesk_root_password}
-      MYSQL_USER: ${uvdesk_db_user}
-      MYSQL_PASSWORD: ${uvdesk_db_password}
+      PUID: <run id command to get PUID and PGID>
+      PGID: <run id command to get PUID and PGID>
+      # TZ: Europe/Lisbon <OPTIONAL>
+      DATABASE_HOST: uvdesk_mysql
+      DATABASE_PORT: 3306
+      MYSQL_DATABASE: ${.env_key}
+      MYSQL_ROOT_PASSWORD: ${.env_key}
+      MYSQL_USER: ${.env_key}
+      MYSQL_PASSWORD: ${.env_key}
+    depends_on:
+      - uvdesk_mysql
+
 volumes:
+  semaphore-mysql:
+    driver: local
   uvdesk-www:
     driver: local
+
 networks:
-  services:
+  NETWORK:
     external: true

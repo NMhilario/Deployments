@@ -9,8 +9,15 @@ entryPoints:
         entryPoint:
           to: https
           scheme: https
+      # UNCOMMENT IF DEPLOYING CROWDSEC
+      # middlewares:
+      #   - crowdsec-bouncer@file
   https:
     address: ":443"
+    # UNCOMMENT IF DEPLOYING CROWDSEC
+    # http:
+    #   middlewares:
+    #     - crowdsec-bouncer@file
 serversTransport:
   insecureSkipVerify: true
 providers:
@@ -37,3 +44,9 @@ certificatesResolvers:
   #       provider: <PROVIDER NAME>
   #       resolvers:
   #         - "<IP RESOLVERS>"
+log:
+  level: "INFO"
+  filePath: "/var/log/traefik/traefik.log"
+# UNCOMMENT IF DEPLOYING CROWDSEC
+# accessLog:
+#   filePath: "/var/log/traefik/access.log"

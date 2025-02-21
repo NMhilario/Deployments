@@ -1,57 +1,64 @@
-version: '3.9'
+version: '3.3'
 
 services:
-#  mysql:
-#    image: mysql:latest
-#    restart: unless-stopped
-#    container_name: mysql
-#    volumes:
-#      - semaphore-mysql:/var/lib/mysql
-#    environment:
-#      - MYSQL_RANDOM_ROOT_PASSWORD=yes
-#      - MYSQL_DATABASE=semaphore
-#      - MYSQL_USER=semaphore
-#      - MYSQL_PASSWORD=secret-password  # change!
-  semaphore:
-    image: semaphoreui/semaphore:v2.8.90
+  semaphore_mysql:
+    image: mysql:<version> # check semaphore docs and pin to recommended version
+    container_name: semaphore_mysql
     restart: unless-stopped
-    container_name: ansible
+    env_file:
+      - .env # <FILE MUST BE CREATED apply chmod 600 .env>
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=no
+      - MYSQL_ROOT_PASSWORD=${.env_key}
+      - MYSQL_DATABASE=${.env_key}
+      - MYSQL_USER=${.env_key}
+      - MYSQL_PASSWORD=${.env_key}
+    volumes:
+      - semaphore-mysql:/var/lib/mysql
+  semaphore:
+    image: semaphoreui/semaphore:<VERSION/LATEST>
+    container_name: semaphore
+    restart: unless-stopped
     ports:
       - 3000:3000
     networks:
-      - services
+      - <NETWORK>
     volumes:
       - ansible-inventory:/inventory:ro
       - ansible-authorized-keys:/authorized-keys:ro
       - ansible-config:/etc/semaphore:rw
     env_file:
-      - .env
+      - .env # <FILE MUST BE CREATED apply chmod 600 .env>
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Lisbon
-      - SEMAPHORE_DB_USER=${SEMAPHORE_DB_USER}
-      - SEMAPHORE_DB_PASS=${SEMAPHORE_DB_PASS}
-      - SEMAPHORE_DB_HOST=${SEMAPHORE_DB_HOST}
-      - SEMAPHORE_DB_PORT=${SEMAPHORE_DB_PORT}
-      - SEMAPHORE_DB_DIALECT=${SEMAPHORE_DB_DIALECT}
-      - SEMAPHORE_DB=${SEMAPHORE_DB}
+      - PUID=<run id command to get PUID and PGID>
+      - PGID=<run id command to get PUID and PGID>
+      # - TZ=Europe/Lisbon <OPTIONAL>
+      - SEMAPHORE_DB_USER=${.env_key}
+      - SEMAPHORE_DB_PASS=${.env_key}
+      - SEMAPHORE_DB_HOST=semaphore_mysql
+      - SEMAPHORE_DB_PORT=3306
+      - SEMAPHORE_DB_DIALECT=${.env_key}
+      - SEMAPHORE_DB=${.env_key}
       - SEMAPHORE_PLAYBOOK_PATH=/tmp/semaphore/
-      - SEMAPHORE_ADMIN_PASSWORD=${SEMAPHORE_ADMIN_PASSWORD}
-      - SEMAPHORE_ADMIN_NAME=${SEMAPHORE_ADMIN_NAME}
-      - SEMAPHORE_ADMIN_EMAIL=${SEMAPHORE_ADMIN_EMAIL}
-      - SEMAPHORE_ADMIN=${SEMAPHORE_ADMIN}
-      - SEMAPHORE_ACCESS_KEY_ENCRYPTION=AMIxYI0ukSSSODUYgnJce1zetqaCacZ0R0zaRgKWxtg=
+      - SEMAPHORE_ADMIN_PASSWORD=${.env_key}
+      - SEMAPHORE_ADMIN_NAME=${.env_key}
+      - SEMAPHORE_ADMIN_EMAIL=${.env_key}
+      - SEMAPHORE_ADMIN=${.env_key}
+      - SEMAPHORE_ACCESS_KEY_ENCRYPTION=AMIxYI0ukSSSODUYgnJce1zetqaCacZ0R0zaRgKWxtg= # FEEL FREE TO CREATE A NEW ENCRYPTION KEY....
       - ANSIBLE_HOST_KEY_CHECKING=false  # (optional) change to true if you want to enable host key checking
-#    depends_on:
-#      - mysql
+    depends_on:
+      - semaphore_mysql
+
 volumes:
+  semaphore-mysql:
+    driver: local
   ansible-inventory:
     driver: local
   ansible-authorized-keys:
     driver: local
   ansible-config:
     driver: local
+
 networks:
-  services:
+  NETWORK:
     external: true

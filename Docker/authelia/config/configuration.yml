@@ -11,7 +11,7 @@ log:
 theme: dark
 # This secret can also be set using the env variables AUTHELIA_JWT_SECRET_FILE
 jwt_secret: pruPOBro5riCr35Ethu4aMLqlS3geTh52LcHeT3usTeblsPok94i0Red1iS9Ub5a
-default_redirection_url: https://authelia.nyxcloud.net
+default_redirection_url: <YOUR URL>
 totp:
   issuer: authelia.com
 #duo_api:
@@ -33,13 +33,11 @@ access_control:
   rules:
     # Rules applied to everyone
     # bypass, one_factor, two_factor
-    - domain: cuidadosaude.nyxcloud.net
+    - domain: <URL_01>
       policy: bypass
-    - domain: cuidadosaude.pt
-      policy: bypass
-    #- domain: pihole.nyxcloud.net
-    #  policy: one_factor
-    - domain: portainer.nyxcloud.net
+    - domain: <URL_02>
+      policy: one_factor
+    - domain: <URL_03>
       policy: two_factor
 session:
   name: authelia_session
@@ -47,7 +45,7 @@ session:
   secret: unsecure_session_secret
   expiration: 3600  # 1 hour
   inactivity: 300  # 5 minutes
-  domain: nyxcloud.net  # Should match whatever your root protected domain is
+  domain: <DOMAIN>  # Should match whatever your root protected domain is
 #redis:
 #  host: redis
 #  port: 6379

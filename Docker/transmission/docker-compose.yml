@@ -1,32 +1,33 @@
-version: '3.8'
+version: '3.3'
+
 services:
   transmission:
-    image: lscr.io/linuxserver/transmission:latest
-    restart: always
+    image: lscr.io/linuxserver/transmission:<VERSION/LATEST>
     container_name: transmission
+    restart: unless-stopped
     ports:
       - 8180:9091
       - 51413:51413
       - 51413:51413/udp
     networks:
-      - services
+      - <NETWORK>
     volumes:
-      - $HOME/transmission/config:/config
-      - $HOME/transmission/downloads:/downloads
-      - $HOME/transmission/watch:/watch
+      - /path/config:/config
+      - /path/downloads:/downloads
+      - /path/watch:/watch
     env_file:
-      - .env
+      - .env # <FILE MUST BE CREATED apply chmod 600 .env>
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Lisbon
+      - PUID=<run id command to get PUID and PGID>
+      - PGID=<run id command to get PUID and PGID>
+      # - TZ=Europe/Lisbon <OPTIONAL>
       #- TRANSMISSION_WEB_HOME= #optional
-      - USER=${transmission_user}
-      - PASS=${transmission_password}
+      - USER=${.env_key}
+      - PASS=${.env_key}
       #- WHITELIST= #optional
       #- PEERPORT= #optional
       #- HOST_WHITELIST= #optional
 
 networks:
-  services:
+  NETWORK:
     external: true

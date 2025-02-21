@@ -1,39 +1,45 @@
 version: '3.3'
+
 services:
   authelia:
-    image: authelia/authelia:latest
-    restart: always
+    image: authelia/authelia:<VERSION/LATEST>
     container_name: authelia
+    restart: unless-stopped
     ports:
       - 9091:9091
     networks:
-      - services
+      - <NETWORK>
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /$HOME/dockerServer/authelia/config:/config
+      - /path/config:/config
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Lisbon
+      - PUID=<run id command to get PUID and PGID>
+      - PGID=<run id command to get PUID and PGID>
+      # - TZ=Europe/Lisbon <OPTIONAL>
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.authelia.entrypoints=http"
-      - "traefik.http.routers.authelia.rule=Host(`authelia.nyxcloud.net`)"
+      - "traefik.http.routers.authelia.rule=Host(`URL`)"
       - "traefik.http.middlewares.authelia-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.authelia.middlewares=authelia-https-redirect"
       - "traefik.http.routers.authelia-secure.entrypoints=https"
-      - "traefik.http.routers.authelia-secure.rule=Host(`authelia.nyxcloud.net`)"
+      - "traefik.http.routers.authelia-secure.rule=Host(`URL`)"
       - "traefik.http.routers.authelia-secure.tls=true"
       - "traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://authelia.nyxcloud.net"
       - "traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true"
       - "traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.routers.authelia-secure.service=authelia"
       - "traefik.http.services.authelia.loadbalancer.server.port=9091"
-      - "traefik.docker.network=services"
+      - "traefik.docker.network=NETWORK"
     healthcheck:
       disable: true
 
 networks:
-  services:
+  NETWORK:
     external: true
+
+### ADD FOLLOWING LINES TO THE MIDDLEWARE SECTION ON CONFIG.YML FILE OF TRAEFIK
+# authelia:
+#   forwardAuth:
+#     address: "http://authelia:9091/api/verify?rd=https://<AUTHELIA URL>"

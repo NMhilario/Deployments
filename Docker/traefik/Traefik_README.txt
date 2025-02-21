@@ -2,13 +2,13 @@
 
 mkdir traefik
 cd traefik
-touch docker-compose.yml
+create Traefik docker-compose file
 mkdir data
 cd data
-touch SSL_FILE_#.json (SEE traefik.yml file)
-chmod 600 SSL_FILE_#.json
-touch traefik.yml
-touch config.yml
+touch SSL_FILE_##.json
+chmod 600 SSL_FILE_##.json
+create traefik.yml file
+create config.yml file
 
 sudo apt update
 
@@ -16,9 +16,12 @@ sudo apt install apache2-utils
 echo $(htpasswd -nb <USER> <PASSWORD>) | sed -e s/\\$/\\$\\$/g
 	- Paste output in docker-compose.yml in line (traefik.http.middlewares.traefik-auth.basicauth.users=<USER>:<HASHED-PASSWORD>)
 
-[CREATE DOCKER PROXY NETWORK]
+[CREATE DOCKER NETWORK]
 
-docker network create NETWORK (see docker-compose.yml file)
+docker network create NETWORK
 
 docker-compose up -d
 docker-compose up -d --force-recreate
+
+FOR ALL DEPLOYMENTS WITHOUT A LABEL SECTION, IN ORDER TO BE PROXIED BY TRAEFIK
+THEY WILL HAVE TO BE DECLARED IN THE TRAEFIK CONFIG FILE AS ROUTERS AND SERVICES.
