@@ -1,0 +1,67 @@
+http:
+  routers:
+    ROUTER_01:
+      entryPoints:
+        - "https"
+      rule: "Host(`URL`)"
+      middlewares:
+        - default-headers
+      #<ONE DOMAIN>
+      tls: {}
+      # <MULTIPLE DOMAINS AND SSL CERTIFICATES>
+      # tls:
+      #   certresolver: "DNS_PROVIDER_# (traefik.yml file)"
+      #   domains: "<DOMAIN>,*.<DOMAIN>"
+      service: SERVICE_01
+    ROUTER_02:
+      entryPoints:
+        - "https"
+      rule: "Host(`URL`)"
+      middlewares:
+        - default-headers
+      #<ONE DOMAIN>
+      tls: {}
+      # <MULTIPLE DOMAINS AND SSL CERTIFICATES>
+      # tls:
+      #   certresolver: "DNS_PROVIDER_# (traefik.yml file)"
+      #   domains: "<DOMAIN>,*.<DOMAIN>"
+      service: SERVICE_02
+  services:
+    SERVICE_01:
+      loadBalancer:
+        servers:
+          - url: "http://<LOCAL IP ADDRESS>:<PORT>"
+        passHostHeader: true
+    SERVICE_02:
+      loadBalancer:
+        servers:
+          - url: "http://<LOCAL IP ADDRESS>:<PORT>"
+        passHostHeader: true
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: https
+    default-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+    default-whitelist:
+      ipWhiteList:
+        sourceRange:
+        - "IP ADDRESS RANGE"
+        - "IP ADDRESS RANGE"
+        - "..."
+    secured:
+      chain:
+        middlewares:
+        - default-whitelist
+        - default-headers

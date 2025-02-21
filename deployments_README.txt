@@ -1,3 +1,6 @@
+INSTALL DOCKER ENGINE
+---------------------
+
 sudo apt update
 
 [DISABLE SWAP]
@@ -64,3 +67,12 @@ sudo cat <<EOF | sudo tee /etc/docker/daemon.json
   "storage-driver": "overlay2"
 }
 EOF
+
+INSTALL DOCKER COMPOSE
+----------------------
+
+sudo curl -L "https://github.com/docker/compose/releases/download/<VERSION>>/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose -v
