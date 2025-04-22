@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bind9-deployment
+  namespace: bind9
+spec:
+  selector:
+    matchLabels:
+      app: bind9
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bind9
+    spec:
+      containers:
+      - name: bind9
+        image: ubuntu/bind9:latest
+        env:
+        - name: BIND9_USER
+          value: "root"
+        ports:
+        - containerPort: 53
+          protocol: TCP
+        - containerPort: 53
+          protocol: UDP
+        volumeMounts:
+        - name: bind9-config
+          mountPath: /etc/bind
+        - name: bind9-cache
+          mountPath: /var/cache/bind
+        - name: bind9-records
+          mountPath: /var/lib/bind
+        securityContext:
+          runAsNonRoot: false
+      volumes:
+      - name: bind9-config
+        persistentVolumeClaim:
+          claimName: bind9-config-pvc
+      - name: bind9-cache
+        persistentVolumeClaim:
+          claimName: bind9-cache-pvc
+      - name: bind9-records
+        persistentVolumeClaim:
+          claimName: bind9-records-pvc

@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bind9-config-pv
+  namespace: bind9
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: <NFS PATH TO CONFIG FOLDER>
+    server: <NFS SERVER IP>
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bind9-cache-pv
+  namespace: bind9
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: <NFS PATH TO CONFIG FOLDER>
+    server: <NFS SERVER IP>
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bind9-records-pv
+  namespace: bind9
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: <NFS PATH TO CONFIG FOLDER>
+    server: <NFS SERVER IP>

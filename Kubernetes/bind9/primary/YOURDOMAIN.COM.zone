@@ -1,0 +1,19 @@
+$TTL 86400
+
+@                                       IN          SOA             ns1.YOURDOMAIN.COM. some.thing.gmail.com. (
+                                                    2025041602      ; serial number
+                                                    12h             ; refresh
+                                                    15m             ; update retry
+                                                    3w              ; expiry
+                                                    2h              ; minimum ttl
+                                                    )
+
+                                        IN              NS      ns1.YOURDOMAIN.COM.
+                                        IN              NS      ns2.YOURDOMAIN.COM.
+
+ns1.YOURDOMAIN.COM.                     IN              A       10.1.10.10
+ns2.YOURDOMAIN.COM.                     IN              A       10.1.10.11
+
+subdomain.YOURDOMAIN.COM.               IN              A       10.1.10.12
+YOURDOMAIN.COM.                         IN              A       10.1.10.13
+*.YOURDOMAIN.COM.                       IN              A       10.1.10.14

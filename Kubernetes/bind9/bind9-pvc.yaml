@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bind9-config-pvc
+  namespace: bind9
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: bind9-config-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bind9-cache-pvc
+  namespace: bind9
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: bind9-cache-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bind9-records-pvc
+  namespace: bind9
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: bind9-records-pv
